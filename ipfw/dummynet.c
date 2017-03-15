@@ -1443,7 +1443,7 @@ dummynet_list(int ac, char *av[], int show_counters)
 	for (i = 0; i < 20; i++) {
 		l = buflen;
 		x = safe_realloc(x, l);
-		bcopy(oid, x, oid->len);
+		memcpy(x, oid, oid->len);
 		ret = do_cmd(-IP_DUMMYNET3, x, (uintptr_t)&l);
 		if (ret != 0 || x->id <= sizeof(*oid))
 			goto done; /* no response */
