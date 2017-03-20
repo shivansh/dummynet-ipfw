@@ -1,0 +1,7 @@
+# Ignore object files
+*.o
+objs
+
+# Ignore binaries
+ipfw/ipfw
+kipfw
