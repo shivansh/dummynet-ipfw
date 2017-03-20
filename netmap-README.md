@@ -1,4 +1,4 @@
-# README FILE FOR IPFW-USER ON TOP OF NETMAP
+# IPFW-USER ON TOP OF NETMAP [(Original file)](https://github.com/luigirizzo/netmap-ipfw/blob/next/README)
 
 This directory contains a version of ipfw and dummynet that can
 run in userland, using NETMAP as the backend for packet I/O.
@@ -8,16 +8,20 @@ for plain filtering, and 2.2 Mpps going through a pipe.
 Some optimizations are possible when running on netmap pipes,
 or other netmap ports that support zero copy.
 
-To build the code simply run
+To build the code simply run -
+
+```
 	make NETMAP_INC=/some/where/with/netmap-release/sys
+```
 
 pointing to the netmap 'sys' directory
 (the makefile uses gmake underneath)
 
 The base version comes from FreeBSD-HEAD -r '{2012-08-03}'
 (and subsequently updated in late 2013)
-with small modifications listed below
+with small modifications listed below -
 
+```
 	netinet/ipfw
 	    ip_dn_io.c
 		support for on-stack mbufs
@@ -26,33 +30,38 @@ with small modifications listed below
 		available in userspace
 	    ip_fw_log.c
 		revise snprintf, SNPARGS (MAC)
-
+```
 
 sbin/ipfw and the kernel counterpart communicate throuugh a
 TCP socket (localhost:5555) carrying the raw data that would
-normally be carried on set/getsockopt.
+normally be carried on `set/getsockopt`.
 
 For testing purposes, opening a telnet session to port 5556 and
 typing some bytes will start a fake 'infinite source' so you can
 check how fast your ruleset works.
 
+```
 	gmake
 	dummynet/ipfw & # preferably in another window
 	telnet localhost 5556 # type some bytes to start 'traffic'
 
 	sh -c "while true; do ipfw/ipfw show; ipfw/ipfw zero; sleep 1; done"
+```
 
 (on an i7-3400 I get about 15 Mpps)
 
-Real packet I/O is possible using netmap info.iet.unipi.it/~luigi/netmap/
+Real packet I/O is possible using [netmap](info.iet.unipi.it/~luigi/netmap/).
 You can use a couple of VALE switches (part of netmap) to connect
 a source and sink to the userspace firewall, as follows
 
-                s       f               f       d    
+```
+                s       f               f       d
    [pkt-gen]-->--[valeA]-->--[kipfw]-->--[valeB]-->--[pkt-gen]
+```
 
 The commands to run (in separate windows) are
 
+```
 	# preliminarly, load the netmap module
 	sudo kldload netmap.ko
 
@@ -70,6 +79,7 @@ The commands to run (in separate windows) are
 
 	# plain again with the firewall and enjoy
 	ipfw/ipfw show  # or other
+```
 
 On my i7-3400 I get about 6.5 Mpps with a single rule, and about 2.2 Mpps
 when going through a dummynet pipe. This is for a single process handling
