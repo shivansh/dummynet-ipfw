@@ -32,7 +32,7 @@ __FBSDID("$FreeBSD: head/sys/netpfil/ipfw/ip_dummynet.c 272840 2014-10-09 19:32:
  * Configuration and internal object management for dummynet.
  */
 
-#include "opt_inet6.h"
+/* #include "opt_inet6.h" */
 
 #include <sys/param.h>
 #include <sys/systm.h>

@@ -1,5 +1,5 @@
 /*
- * $Id: test_dn_sched.c 5626 2010-03-04 21:55:22Z luigi $
+ * $FreeBSD$
  *
  * library functions for userland testing of dummynet schedulers
  */
@@ -15,6 +15,9 @@ m_freem(struct mbuf *m)
 int
 dn_sched_modevent(module_t mod, int cmd, void *arg)
 {
+	(void)mod;
+	(void)cmd;
+	(void)arg;
 	return 0;
 }
 
@@ -32,6 +35,8 @@ int
 dn_delete_queue(void *_q, void *do_free)
 {
 	struct dn_queue *q = _q;
+
+	(void)do_free;
         if (q->mq.head)
                 dn_free_pkts(q->mq.head);
         free(q);
@@ -56,6 +61,7 @@ dn_enqueue(struct dn_queue *q, struct mbuf* m, int drop)
         mq_append(&q->mq, m);
         q->ni.length++;
         q->ni.tot_bytes += m->m_pkthdr.len;
+        q->ni.tot_pkts++;
         return 0;
 
 drop:
@@ -66,6 +72,7 @@ drop:
 int
 ipdn_bound_var(int *v, int dflt, int lo, int hi, const char *msg)
 {
+	(void)msg;
         if (*v < lo) {
                 *v = dflt;
         } else if (*v > hi) {
@@ -78,12 +85,12 @@ ipdn_bound_var(int *v, int dflt, int lo, int hi, const char *msg)
 int
 fls(int mask)
 {
-        int bit;
- 
-        if (mask == 0)
-                return (0);
-        for (bit = 1; mask != 1; bit++)
-                mask = (unsigned int)mask >> 1;
-        return (bit);
+	int bit;
+
+	if (mask == 0)
+		return (0);
+	for (bit = 1; mask != 1; bit++)
+		mask = (unsigned int)mask >> 1;
+	return (bit);
 }
 #endif

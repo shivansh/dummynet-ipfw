@@ -1,14 +1,15 @@
 #
-# $Id: Makefile 5626 2010-03-04 21:55:22Z luigi $
+# $FreeBSD$
 #
 # Makefile for building userland tests
 # this is written in a form compatible with gmake
 
 SCHED_SRCS = test_dn_sched.c
 SCHED_SRCS += dn_sched_fifo.c
-SCHED_SRCS += dn_sched_wf2q.c
+SCHED_SRCS += dn_sched_prio.c
 SCHED_SRCS += dn_sched_qfq.c
 SCHED_SRCS += dn_sched_rr.c
+SCHED_SRCS += dn_sched_wf2q.c
 SCHED_SRCS += dn_heap.c
 SCHED_SRCS += main.c
 
@@ -17,15 +18,12 @@ SCHED_OBJS=$(SCHED_SRCS:.c=.o)
 HEAP_SRCS = dn_heap.c test_dn_heap.c
 HEAP_OBJS=$(HEAP_SRCS:.c=.o)
 
-VPATH=	.:../dummynet2
+VPATH=	.:..
 
-#CFLAGS = -I../dummynet2/include -I. -Wall -Werror -O3 -DIPFW
-CFLAGS = -I. -I../dummynet2/include/netinet/ipfw -DIPFW
-CFLAGS +=  -Wall -Werror
-CFLAGS += -g -O3
+CFLAGS = -I.. -I. -Wall -Werror -O3 -Wextra
 TARGETS= test_sched # no test_heap by default
 
-all: $(TARGETS)
+all:	$(TARGETS)
 
 test_heap : $(HEAP_OBJS)
 	$(CC) -o $@ $(HEAP_OBJS)

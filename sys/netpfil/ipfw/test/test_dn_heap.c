@@ -27,7 +27,7 @@
 /*
  * Userland code for testing binary heaps and hash tables
  *
- * $Id: test_dn_heap.c 6131 2010-04-22 15:37:36Z svn_panicucci $
+ * $FreeBSD$
  */
 
 #include <sys/cdefs.h>
@@ -36,7 +36,7 @@
 #include <stdio.h>
 #include <strings.h>
 #include <stdlib.h>
-#include "dn_test.h"
+
 #include  "dn_heap.h"
 #define log(x, arg...)	fprintf(stderr, ## arg)
 #define panic(x...)	fprintf(stderr, ## x), exit(1)
