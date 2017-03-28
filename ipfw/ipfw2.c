@@ -2853,7 +2853,7 @@ fill_ip(ipfw_insn_ip *cmd, char *av, int cblen, struct tidx *tstate)
 			d[1] = htonl(~0 << (32 - masklen));
 		break;
 	case '{':	/* no mask, assume /24 and put back the '{' */
-		d[1] = htonl(~0 << (32 - 24));
+		d[1] = htonl(~0UL << (32 - 24));
 		*(--p) = md;
 		break;
 
